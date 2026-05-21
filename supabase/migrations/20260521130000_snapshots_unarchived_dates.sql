@@ -15,7 +15,16 @@
 --     ON (snapshot_date, archived_to_r2_at)
 --     WHERE archived_to_r2_at IS NULL
 -- so the GROUP BY is cheap even on the full backlog.
+--
+-- A hand-created copy of this function already exists in prod
+-- with return type TABLE(snapshot_date date). We extend the
+-- shape to include `remaining bigint`, and CREATE OR REPLACE
+-- can't alter a function's return type — so drop first. Safe:
+-- the edge function only reads snapshot_date and ignores extra
+-- columns, and nothing else references it.
 -- ============================================================
+
+DROP FUNCTION IF EXISTS public.snapshots_unarchived_dates();
 
 CREATE OR REPLACE FUNCTION public.snapshots_unarchived_dates()
 RETURNS TABLE (snapshot_date date, remaining bigint)
