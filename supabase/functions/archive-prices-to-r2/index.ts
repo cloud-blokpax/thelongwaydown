@@ -20,7 +20,12 @@
 //       Authorization: Bearer <SERVICE_ROLE_KEY>.
 //
 // R2 credentials are read from Supabase Vault:
-//   r2_account_id, r2_access_key_id, r2_secret_access_key, r2_bucket
+//   r2_account_id, r2_access_key_id, r2_secret_access_key, r2_bucket_name
+//
+// Output rows are projected to canonical "Schema B" JSONL — the
+// same on-disk shape the prior implementation wrote — so DuckDB
+// queries over vault/prices/**/*.jsonl.gz keep working and the
+// May 19 part00 already on R2 stays consistent with new shards.
 
 import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { AwsClient } from "https://esm.sh/aws4fetch@1.0.20";
@@ -95,7 +100,7 @@ Deno.serve(async (req) => {
     getSecret(admin, "r2_account_id"),
     getSecret(admin, "r2_access_key_id"),
     getSecret(admin, "r2_secret_access_key"),
-    getSecret(admin, "r2_bucket"),
+    getSecret(admin, "r2_bucket_name"),
   ]);
   if (!accountId || !accessKeyId || !secretAccessKey || !bucket) {
     return json({ ok: false, error: "missing_r2_credentials" }, 500);
@@ -276,13 +281,49 @@ async function gzipJsonl(rows: SnapshotRow[]): Promise<Uint8Array> {
       if (i >= rows.length) { controller.close(); return; }
       const end = Math.min(i + 500, rows.length);
       let chunk = "";
-      for (; i < end; i++) chunk += JSON.stringify(rows[i]) + "\n";
+      for (; i < end; i++) chunk += projectToCanonical(rows[i]) + "\n";
       controller.enqueue(encoder.encode(chunk));
     },
   });
   const compressed = readable.pipeThrough(new CompressionStream("gzip"));
   const ab = await new Response(compressed).arrayBuffer();
   return new Uint8Array(ab);
+}
+
+// Canonical "Schema B" projection — kept byte-compatible with the
+// prior archive function so DuckDB queries over the existing R2
+// prefix don't see a schema seam at the cutover. snapshot_date is
+// taken from the row itself since every shard contains rows from
+// exactly one date.
+function projectToCanonical(s: SnapshotRow): string {
+  let canonicalSource: string;
+  if (s.source === "tcgplayer_market" || s.source === "tcgplayer_low") {
+    canonicalSource = "tcgplayer";
+  } else if (s.source === "cardmarket_csv") {
+    canonicalSource = "cardmarket";
+  } else {
+    canonicalSource = s.source;
+  }
+
+  const payload: Record<string, unknown> = { original_source: s.source };
+  if (s.cm_avg30 != null) payload.cm_avg30 = s.cm_avg30;
+
+  return JSON.stringify({
+    archive_version: s.archive_version ?? 1,
+    snapshot_date: s.snapshot_date,
+    card_canonical_key: s.card_canonical_key,
+    source: canonicalSource,
+    source_table: "thevault.price_daily_snapshots",
+    currency: s.currency,
+    variant_label: s.variant_label,
+    condition: s.condition,
+    is_foil: s.is_foil,
+    price_low: s.price_low,
+    price_market: s.price_market,
+    price_high: s.price_high,
+    captured_at: s.captured_at,
+    source_payload: payload,
+  });
 }
 
 function r2KeyFor(snapshotDate: string, partIndex: number): string {
