@@ -44,8 +44,12 @@ command dispatch path (`dispatch`/`ACTIONS`).
 - **Phase 3 - Storylets** - done. Replaced the `resolveEvent` switch and
   `WORLD.events` with data-driven storylets over a "quality" map
   (`WORLD.storylets`, `applyStoryEffects`, `S.qualities`), save format v3.
-- **Phase 4 - Companions become real entities** - next up.
-- **Phase 5 - Inventory & loot-box UI.**
+- **Phase 4 - Companions become real entities** - done. Companions gain
+  stat blocks (`WORLD.companions`) and become live entities (`S.companion`)
+  via `buildCompanion`, sharing the player/enemy entity pipeline: a combat
+  turn, enemy targeting, downed state, revive on descend/rest, `trust_<id>`
+  as a saved quality, save format v4.
+- **Phase 5 - Inventory & loot-box UI** - next up.
 - **Phase 6 - Quests.**
 - **Phase 7 - Prose + platform** - LLM narration upgrade, then move to a
   server-rendered platform to hide the API key.

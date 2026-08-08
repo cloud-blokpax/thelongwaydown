@@ -19,3 +19,9 @@ WORLD.storylets + applyStoryEffects replace the resolveEvent switch and
 WORLD.events. S.qualities map (saved, v3). Storylet/choice prereqs gate on
 floor + qualities. Lazy deterministic selection via positional hash. 11 events
 ported 1:1; dead switch/array removed.
+
+## Phase 4 - companions as entities (shipped)
+WORLD.companions gain stat blocks; S.companion is a live entity via
+buildCompanion(). Companion takes a combat turn (dmg + on-hit statuses);
+enemy may target it; downed at 0; revive on descend/rest. trust_<id> saved
+quality (rest +1; >=3 -> +2 dmg). Ally UI card. Save v4 (+migration).
