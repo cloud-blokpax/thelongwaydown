@@ -25,3 +25,11 @@ WORLD.companions gain stat blocks; S.companion is a live entity via
 buildCompanion(). Companion takes a combat turn (dmg + on-hit statuses);
 enemy may target it; downed at 0; revive on descend/rest. trust_<id> saved
 quality (rest +1; >=3 -> +2 dmg). Ally UI card. Save v4 (+migration).
+
+## Phase 5 - inventory + loot boxes (shipped)
+Bag screen (view/equip/sell), sealed tiered boxes (makeBox/openBox) for
+achievement+boss rewards, one-place inventory model (equipment XOR bag).
+
+## Phase 6 - quests (shipped)
+prereq qualMax + pinned storylets; 'The Beacon' 3-step chain over quest_beacon
+with a Mythic payoff. Quests are data on the Phase 3 storylet engine.
