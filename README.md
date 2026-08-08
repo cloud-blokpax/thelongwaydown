@@ -49,9 +49,19 @@ command dispatch path (`dispatch`/`ACTIONS`).
   via `buildCompanion`, sharing the player/enemy entity pipeline: a combat
   turn, enemy targeting, downed state, revive on descend/rest, `trust_<id>`
   as a saved quality, save format v4.
-- **Phase 5 - Inventory & loot-box UI** - next up.
-- **Phase 6 - Quests.**
-- **Phase 7 - Prose + platform** - LLM narration upgrade, then move to a
-  server-rendered platform to hide the API key.
+- **Phase 5 - Inventory/loot boxes** - done. A Bag screen (`renderBag`) for
+  viewing equipped slots, sealed tiered loot boxes, and spare gear; manual
+  equip/sell (`equipItem`/`sellItem`); sealed boxes (`makeBox`/`openBox`)
+  for achievement + boss rewards; a one-place inventory model where an item
+  lives in `equipment` XOR `bag`, never both.
+- **Phase 6 - Quests** - done. Prereq gains `qualMax` for exact-stage
+  gating and a `pin` flag for selection priority; "The Beacon" is the first
+  quest, a 3-step storylet chain (`beacon-start` -> `beacon-1` ->
+  `beacon-2`) over the `quest_beacon` quality with a forced-equip Mythic
+  payoff.
+- **Phase 7 - LLM narration + platform** - next up. LLM upgrade over the
+  `templateFor`/`NARR` prose layer, strictly downstream of state, template
+  as offline/fallback; migrate to a server-rendered platform to hide the
+  API key.
 
 Ship each phase as small, testable commits; never big-bang.
