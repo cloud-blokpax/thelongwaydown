@@ -1,79 +1,51 @@
-# The Vault
+# The Long Way Down
 
-TCG inventory & arbitrage app for cross-border (US ↔ EU) card trading.
+A single-file, mobile-first, procedural LitRPG dungeon-crawler. Descend eight
+floors of a lethal dungeon that's secretly an alien game show, racing a
+per-floor collapse timer through combat, events, loot, and safe rooms. Original
+IP inspired by the *Dungeon Crawler Carl* genre, but all names, mobs, items,
+and copy are original. Non-commercial, fan-adjacent original work.
 
-## Stack
+## Layout
 
-- Next.js 14 App Router (TypeScript)
-- Tailwind CSS + shadcn/ui-style primitives
-- `@supabase/ssr` for cookie-based auth (no `auth-helpers`)
-- TanStack Query for client-side data fetching
-- Configured as an installable PWA
-- Deploys to **Cloudflare Pages** via `@cloudflare/next-on-pages`
+The game is a single static file, `index.html`, at the repo root. Vanilla
+JS (ES5 style: `var`, function declarations, no build step), pure ASCII
+(non-ASCII characters are written as `\uXXXX` escapes inside JS strings).
+No external requests, no assets, no bundler.
 
-## Getting started
+Vercel project `the-long-way-down` has its Root Directory set to the repo
+root and is connected via Git integration: pushes to `main` auto-deploy to
+production, pushes to other branches / open PRs get preview URLs.
 
-```bash
-npm install
-cp .env.example .env.local   # fill in values from Supabase dashboard
-npm run dev
-```
-
-### Environment variables
-
-| Var | Description |
-| --- | --- |
-| `NEXT_PUBLIC_SUPABASE_URL` | `https://oclhdvxktfvkmjkdfeic.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase project anon key |
-
-Set the same variables in **Cloudflare Pages → Settings → Environment variables**.
-
-## Auth
-
-- Sign-up is disabled — admins invite users via the Supabase dashboard.
-- The middleware (`middleware.ts`) refreshes the session cookie on every request and
-  redirects unauthenticated users to `/login` (preserving `?next=`).
-- The `(app)` route group is gated server-side via `getUser()` in `app/(app)/layout.tsx`.
-
-## Pages (Phase 1)
-
-- `/dashboard` — counts by inventory status, recent items, open trips.
-- `/inventory` — searchable, sortable, filterable list. Detail at `/inventory/:id`. Edit at `/inventory/:id/edit`.
-- `/trips` — list of trips with totals from the `trip_totals` view. Detail at `/trips/:id` showing assigned items + amortization.
-- `/calculator` — tabs for **Floor price** (calls `calc_floor_price`) and **Max buy** (calls `calc_max_buy_price`).
-- `/settings` — profile + (admin only) edit rows in the `settings` table.
-
-## Cloudflare Pages deployment
-
-`next-on-pages` builds the worker output:
+## Verifying a build
 
 ```bash
-npm run pages:build
-npm run pages:deploy
+# ASCII check
+LC_ALL=C grep -qP '[^\x00-\x7F]' index.html && echo HAS_NONASCII || echo OK
+
+# JS syntax check (extract the <script> body first)
+node --check check.js && echo "JS OK"
 ```
 
-In the Cloudflare Pages dashboard:
+See the architecture guide (design bible, tracked separately) for the full
+engine breakdown: seeded RNG (`makeRng` for floor gen, `draw()`/`hashF` for
+gameplay), the event bus, versioned save system (`SAVE_KEY`), and the
+command dispatch path (`dispatch`/`ACTIONS`).
 
-- **Build command**: `npm run pages:build`
-- **Build output directory**: `.vercel/output/static`
-- **Compatibility flags**: `nodejs_compat`
-- **Environment variables**: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+## Roadmap
 
-## PWA
+- **Phase 0 - Foundations** - done. Deterministic seeded RNG, versioned
+  save/resume, event bus, command dispatch, centralized mutation helpers.
+- **Phase 1 - One entity + effects/status** - next up. Unify player/monster
+  entities, add a declarative effect-descriptor resolver, add status
+  effects, add a real stat pipeline.
+- **Phase 2 - Progression** - XP, level curves, active combat abilities.
+- **Phase 3 - Storylets** - replace the `resolveEvent` switch with data-driven
+  storylets over a "quality" map.
+- **Phase 4 - Companions become real entities.**
+- **Phase 5 - Inventory & loot-box UI.**
+- **Phase 6 - Quests.**
+- **Phase 7 - Prose + platform** - LLM narration upgrade, then move to a
+  server-rendered platform to hide the API key.
 
-`public/manifest.webmanifest` + `public/sw.js` register on load. Replace the placeholder icons in `public/icons/` with real artwork before shipping.
-
-## Running migrations
-
-Migrations in `supabase/migrations/` are **not** auto-applied on deploy. Apply them manually:
-
-**Option A — Claude in chat:** ask Claude to "apply the new migrations to Supabase". It will use the Supabase MCP tools (`apply_migration` / `list_migrations`) on project `oclhdvxktfvkmjkdfeic`.
-
-**Option B — Supabase dashboard:** open the [SQL editor](https://supabase.com/dashboard/project/oclhdvxktfvkmjkdfeic/sql/new), paste the SQL from the new file, run it.
-
-After applying any migration that adds tables, RPCs, or columns, regenerate `types/database.ts` (see `docs/thevault-claude-code-fixes.md` Task 2) and remove any stale `as never` casts.
-
-## Out of scope (Phase 2/3)
-
-- Price feeds, charts, buyer view, consignor view, image uploads.
-- Frontend RBAC: surface-level only today (e.g. settings edit gating). Database RLS will be added next; the frontend renders whatever rows it gets back.
+Ship each phase as small, testable commits; never big-bang.
