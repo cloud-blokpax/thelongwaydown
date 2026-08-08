@@ -36,12 +36,13 @@ command dispatch path (`dispatch`/`ACTIONS`).
 
 - **Phase 0 - Foundations** - done. Deterministic seeded RNG, versioned
   save/resume, event bus, command dispatch, centralized mutation helpers.
-- **Phase 1 - One entity + effects/status** - next up. Unify player/monster
-  entities, add a declarative effect-descriptor resolver, add status
-  effects, add a real stat pipeline.
-- **Phase 2 - Progression** - XP, level curves, active combat abilities.
-- **Phase 3 - Storylets** - replace the `resolveEvent` switch with data-driven
-  storylets over a "quality" map.
+- **Phase 1 - One entity + effects/status** - done. First-class enemy
+  entity, a declarative effect-descriptor resolver, status effects
+  (bleeding/burning/stunned/weakened/guarded), save format v2.
+- **Phase 2 - Progression** - done. Kill-based XP, a data-driven level
+  curve, active per-class combat abilities + universal Guard, cooldowns.
+- **Phase 3 - Storylets** - next up. Replace the `resolveEvent` switch with
+  data-driven storylets over a "quality" map.
 - **Phase 4 - Companions become real entities.**
 - **Phase 5 - Inventory & loot-box UI.**
 - **Phase 6 - Quests.**
