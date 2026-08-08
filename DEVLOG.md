@@ -13,3 +13,9 @@ Kill-based XP (`gainXp`) with a data-driven level curve
 (`WORLD.abilities`) + universal Guard as effect descriptors resolved by
 `resolveAbility`; cooldowns (`S.cooldowns`, reset per fight, persisted in
 save, ticked at the start of each player action); level/ability HUD.
+
+## Phase 3 - storylets (shipped)
+WORLD.storylets + applyStoryEffects replace the resolveEvent switch and
+WORLD.events. S.qualities map (saved, v3). Storylet/choice prereqs gate on
+floor + qualities. Lazy deterministic selection via positional hash. 11 events
+ported 1:1; dead switch/array removed.

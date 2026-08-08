@@ -41,9 +41,10 @@ command dispatch path (`dispatch`/`ACTIONS`).
   (bleeding/burning/stunned/weakened/guarded), save format v2.
 - **Phase 2 - Progression** - done. Kill-based XP, a data-driven level
   curve, active per-class combat abilities + universal Guard, cooldowns.
-- **Phase 3 - Storylets** - next up. Replace the `resolveEvent` switch with
-  data-driven storylets over a "quality" map.
-- **Phase 4 - Companions become real entities.**
+- **Phase 3 - Storylets** - done. Replaced the `resolveEvent` switch and
+  `WORLD.events` with data-driven storylets over a "quality" map
+  (`WORLD.storylets`, `applyStoryEffects`, `S.qualities`), save format v3.
+- **Phase 4 - Companions become real entities** - next up.
 - **Phase 5 - Inventory & loot-box UI.**
 - **Phase 6 - Quests.**
 - **Phase 7 - Prose + platform** - LLM narration upgrade, then move to a
