@@ -59,6 +59,15 @@ command dispatch path (`dispatch`/`ACTIONS`).
   quest, a 3-step storylet chain (`beacon-start` -> `beacon-1` ->
   `beacon-2`) over the `quest_beacon` quality with a forced-equip Mythic
   payoff.
+- **Content-depth expansion** - done. Race sets an `archetype` that gates
+  class (class is now a specialization of the race); 14 new branching
+  storylets plus a `spawn` effect so choices can lead into combat/loot/safe;
+  much bigger floors with more exploration events; optional bosses with a
+  face-now / mark-for-later gate, where marked bosses can ambush as a
+  forced `hunter` fight on a later floor. +5 races, +7 classes/abilities,
+  a `rallied` status, +14 gear, +3 companions, +6 mobs, +2 hunter bosses.
+  Save format v5 (`markedBosses`, `floorDirty`, dirty-floor `encs`
+  snapshot) with migration from v1-v4.
 - **Phase 7 - LLM narration + platform** - next up. LLM upgrade over the
   `templateFor`/`NARR` prose layer, strictly downstream of state, template
   as offline/fallback; migrate to a server-rendered platform to hide the
