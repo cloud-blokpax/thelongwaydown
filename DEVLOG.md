@@ -48,3 +48,9 @@ combat; shared resolveEffects with abilities; cleanse effect. Statuses regen +
 vulnerable; dealToEnemy applies the Exposed multiplier. Elite mobs (deterministic
 by floor+position) with bonus loot. floorIn prereq + 8 floor-themed storylets +
 supply caches. Second quest quest_repo -> spawn:boss the-repo-man. +5 weapons.
+
+## Story interludes + achievement/item screens (shipped)
+New kind:"lore" encounter (WORLD.lore + WORLD.loreByFloor, ~14% of encounters,
+baked deterministically, kept in dirty-floor save). Achievements now a centered
+modal (must close); item-received modal on takeLoot/openBox/storylet item+
+consumable grants. Modal queue: pushModal/renderModal/closeModal. Save v5 unchanged.
