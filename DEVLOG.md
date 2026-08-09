@@ -33,3 +33,11 @@ achievement+boss rewards, one-place inventory model (equipment XOR bag).
 ## Phase 6 - quests (shipped)
 prereq qualMax + pinned storylets; 'The Beacon' 3-step chain over quest_beacon
 with a Mythic payoff. Quests are data on the Phase 3 storylet engine.
+
+## Content-depth expansion (shipped)
+Race->archetype->class dependency (class gated by race). +5 races, +7 classes/
+abilities, rallied status, +14 gear, +3 companions, +6 mobs, +2 hunter bosses.
+14 branching storylets + spawn effect (choices lead into combat/loot/safe).
+Bigger floors, more events. Optional bosses (face now / mark for later); marked
+bosses ambush on later floors. Save v5 (markedBosses, floorDirty, dirty-floor
+encs snapshot) + migration.
