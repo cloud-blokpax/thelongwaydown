@@ -41,3 +41,10 @@ abilities, rallied status, +14 gear, +3 companions, +6 mobs, +2 hunter bosses.
 Bigger floors, more events. Optional bosses (face now / mark for later); marked
 bosses ambush on later floors. Save v5 (markedBosses, floorDirty, dirty-floor
 encs snapshot) + migration.
+
+## Consumables / elites / floor themes / Repo Man quest (shipped)
+WORLD.consumables (9) usable from combat bar + bag, single-use, cost a turn in
+combat; shared resolveEffects with abilities; cleanse effect. Statuses regen +
+vulnerable; dealToEnemy applies the Exposed multiplier. Elite mobs (deterministic
+by floor+position) with bonus loot. floorIn prereq + 8 floor-themed storylets +
+supply caches. Second quest quest_repo -> spawn:boss the-repo-man. +5 weapons.
