@@ -54,3 +54,10 @@ New kind:"lore" encounter (WORLD.lore + WORLD.loreByFloor, ~14% of encounters,
 baked deterministically, kept in dirty-floor save). Achievements now a centered
 modal (must close); item-received modal on takeLoot/openBox/storylet item+
 consumable grants. Modal queue: pushModal/renderModal/closeModal. Save v5 unchanged.
+
+## Magic + heal-free story rests (shipped)
+Mana (8+2*Wits; refill on descend, partial on rest; HUD readout). WORLD.spells (12,
+Wits-scaling, shared resolveEffects). Combat casting costs mana + a turn. Starting
+spells by class/archetype; learn more via teach-storylets and spell scrolls (SPELL
+LEARNED modal, type:"spell"). Safe encounters split: rest points (heal HP+mana) vs
+story respites (heal:false, no healing; NARR.respite). ensureMagic migrates old saves.
