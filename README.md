@@ -68,6 +68,17 @@ command dispatch path (`dispatch`/`ACTIONS`).
   a `rallied` status, +14 gear, +3 companions, +6 mobs, +2 hunter bosses.
   Save format v5 (`markedBosses`, `floorDirty`, dirty-floor `encs`
   snapshot) with migration from v1-v4.
+- **Consumables / elites / floor themes / Repo Man quest** - done. A
+  usable-item category (`WORLD.consumables`, 9 items) shared between the
+  combat bar and the Bag, resolved through the same `resolveEffects` as
+  abilities; using one during a fight costs the turn. New statuses Mending
+  (regen) and Exposed (vulnerable), plus a `dealToEnemy` damage choke point
+  that applies the Exposed multiplier. Deterministic, save-safe elite mob
+  variants (`applyElite`) with bonus gold/loot. 8 floor-themed storylets via
+  a `floorIn` prereq, plus supply-cache/field-kit storylets. A second quest,
+  "The Repo Man" (`quest_repo`, 3-step chain), ending in a debt-or-blood
+  choice that can `spawn: boss` a forced fight. +5 weapons. Save format
+  unchanged (still v5).
 - **Phase 7 - LLM narration + platform** - next up. LLM upgrade over the
   `templateFor`/`NARR` prose layer, strictly downstream of state, template
   as offline/fallback; migrate to a server-rendered platform to hide the
