@@ -61,3 +61,10 @@ Wits-scaling, shared resolveEffects). Combat casting costs mana + a turn. Starti
 spells by class/archetype; learn more via teach-storylets and spell scrolls (SPELL
 LEARNED modal, type:"spell"). Safe encounters split: rest points (heal HP+mana) vs
 story respites (heal:false, no healing; NARR.respite). ensureMagic migrates old saves.
+
+## Spell learning rules + attribute gating (shipped)
+Spells: school/tier/cost/req; cast requires meetsReq (effective stat), staggered by
+tier (Mend 5MP/Wits3 .. Revive 20MP/Wits8). Learn only via class-natural (schools,
+level-staggered; non-casters none) or found (loot-box scrolls ~25%, quest teach).
+Removed free-teach exploration events. +Greater Heal, +Revive (+revive effect),
+schoolsFor() fallback. Save v5.
