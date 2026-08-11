@@ -68,3 +68,11 @@ tier (Mend 5MP/Wits3 .. Revive 20MP/Wits8). Learn only via class-natural (school
 level-staggered; non-casters none) or found (loot-box scrolls ~25%, quest teach).
 Removed free-teach exploration events. +Greater Heal, +Revive (+revive effect),
 schoolsFor() fallback. Save v5.
+
+## Branching maps + shops (shipped)
+Floors are a layered graph: S.layers (nodes w/ next edges + vis), S.li/S.ci replace
+cursor, S.forking + Crossroads fork screen, chooseNext. generateFloor+linkLayers with
+reachability pass; nodeKey()=li*100+ci for positional hashing. Rewritten renderMap
+(rows). Graph-aware spawn/ambush; boss-flee still blocked. Save v6 (serializes map;
+pre-v6 restarts current floor). New shop node kind (gear+consumables for gold, never
+spells; stock persisted). ~17->30 layers/floor.
